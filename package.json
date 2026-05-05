@@ -4,10 +4,7 @@
   "private": true,
   "description": "Portfolio website with Vercel API backend",
   "scripts": {
-    "start": "vercel dev",
-    "dev": "vercel dev"
-  },
-  "devDependencies": {
-    "vercel": "^53.1.1"
+    "start": "npx vercel dev",
+    "dev": "npx vercel dev"
   }
 }

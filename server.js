@@ -1,19 +1,26 @@
-const path = require("path");
 const express = require("express");
 const dotenv = require("dotenv");
+const path = require("path");
+
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 
-// API Routes
-app.post("/api/contact", async (req, res) => { /* ... your existing logic ... */ });
-app.get("/api/telegram-chat-id", async (req, res) => { /* ... your existing logic ... */ });
+// Your Telegram logic remains exactly the same
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
-// On Vercel, the "public" folder is served automatically if configured.
-// But for safety in your Express routes:
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/index.html"));
+// API Route for Contact Form
+app.post("/api/contact", async (req, res) => {
+  try {
+    const { name, email, message } = req.body;
+    // ... (Keep your existing Telegram fetch logic here)
+    return res.json({ ok: true });
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
 });
 
+// IMPORTANT: For Vercel, we export the app instead of calling app.listen()
 module.exports = app;

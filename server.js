@@ -5,11 +5,18 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const app = express();
+// Vercel sets the PORT automatically, but we keep 5500 for local
 const PORT = process.env.PORT || 5500;
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
 app.use(express.json());
+
+/** 
+ * 1. SERVE STATIC FILES FIRST
+ * This ensures that when the browser asks for /style.css, 
+ * Express looks for the file before hitting the HTML route.
+ */
 app.use(express.static(path.join(__dirname)));
 
 const getChatIdsFromUpdates = async () => {
@@ -30,6 +37,7 @@ const getChatIdsFromUpdates = async () => {
   );
 };
 
+// API Route for Contact Form
 app.post("/api/contact", async (req, res) => {
   try {
     const { name, email, message } = req.body || {};
@@ -56,11 +64,11 @@ app.post("/api/contact", async (req, res) => {
     }
 
     const text =
-      "New portfolio contact message\n\n" +
-      `Name: ${name}\n` +
-      `Email: ${email}\n` +
-      `Message: ${message}\n` +
-      `Time: ${new Date().toISOString()}`;
+      "🚀 New Portfolio Message\n\n" +
+      `👤 Name: ${name}\n` +
+      `📧 Email: ${email}\n` +
+      `💬 Message: ${message}\n\n` +
+      `🕒 Sent at: ${new Date().toLocaleString()}`;
 
     const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 
@@ -80,27 +88,38 @@ app.post("/api/contact", async (req, res) => {
 
     return res.json({ ok: true });
   } catch (error) {
+    console.error("Contact API Error:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 });
 
+// API Route to fetch chat IDs
 app.get("/api/telegram-chat-id", async (_req, res) => {
   try {
     if (!TELEGRAM_BOT_TOKEN) {
       return res.status(500).json({ error: "Server not configured" });
     }
     const chatIds = await getChatIdsFromUpdates();
-
     return res.json({ ok: true, chatIds });
   } catch (_error) {
     return res.status(500).json({ error: "Internal server error" });
   }
 });
 
-app.get("*", (_req, res) => {
+/**
+ * 2. CATCH-ALL ROUTE
+ * This serves your index.html for any route that isn't an image/css/js file.
+ * Important: Use a specific path for your index.html to avoid recursion.
+ */
+app.get("/", (_req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-app.listen(PORT, () => {
-  console.log(`Portfolio server running at http://localhost:${PORT}`);
-});
+// For Vercel, we export the app; for local, we listen.
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Portfolio server running at http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;

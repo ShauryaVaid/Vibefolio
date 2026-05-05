@@ -1,13 +1,20 @@
 {
   "version": 2,
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/server.js"
+      "src": "/api/contact",
+      "dest": "/api/contact.js"
     },
     {
-      "source": "/(.*)",
-      "destination": "/public/$1"
+      "src": "/api/telegram-chat-id",
+      "dest": "/api/telegram-chat-id.js"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }

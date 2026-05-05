@@ -2,13 +2,12 @@
   "name": "shaurya-portfolio",
   "version": "1.0.0",
   "private": true,
-  "description": "Portfolio website with Telegram contact backend",
-  "main": "server.js",
+  "description": "Portfolio website with Vercel API backend",
   "scripts": {
-    "start": "node server.js"
+    "start": "vercel dev",
+    "dev": "vercel dev"
   },
-  "dependencies": {
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2"
+  "devDependencies": {
+    "vercel": "^53.1.1"
   }
 }

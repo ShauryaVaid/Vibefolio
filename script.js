@@ -1,21 +1,39 @@
 // Initialize Lenis for Smooth Scrolling
-const lenis = new Lenis({
-  duration: 1.2,
-  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  direction: 'vertical',
-  gestureDirection: 'vertical',
-  smooth: true,
-});
+let lenis;
+try {
+  lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    direction: 'vertical',
+    gestureDirection: 'vertical',
+    smooth: true,
+  });
 
-function raf(time) {
-  lenis.raf(time);
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
   requestAnimationFrame(raf);
+} catch (e) {
+  console.warn("Lenis not loaded", e);
 }
-requestAnimationFrame(raf);
 
 // Intro Loader & Hero Animation with Anime.js
 document.body.style.overflow = 'hidden';
-window.addEventListener('load', () => {
+document.addEventListener('DOMContentLoaded', () => {
+  // Fallback to remove loader just in case
+  setTimeout(() => {
+    const loader = document.querySelector('.loader');
+    if(loader) loader.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }, 3500);
+
+  if (typeof anime === 'undefined') {
+    document.querySelector('.loader').style.display = 'none';
+    document.body.style.overflow = 'auto';
+    return;
+  }
+
   const loaderTimeline = anime.timeline({
     easing: 'easeOutExpo',
   });
@@ -75,16 +93,20 @@ let outlineX = 0, outlineY = 0;
 window.addEventListener('mousemove', (e) => {
   mouseX = e.clientX;
   mouseY = e.clientY;
-  cursorDot.style.left = `${mouseX}px`;
-  cursorDot.style.top = `${mouseY}px`;
+  if(cursorDot) {
+    cursorDot.style.left = `${mouseX}px`;
+    cursorDot.style.top = `${mouseY}px`;
+  }
 });
 
 // Smooth follow for outline
 function renderCursor() {
   outlineX += (mouseX - outlineX) * 0.15;
   outlineY += (mouseY - outlineY) * 0.15;
-  cursorOutline.style.left = `${outlineX}px`;
-  cursorOutline.style.top = `${outlineY}px`;
+  if(cursorOutline) {
+    cursorOutline.style.left = `${outlineX}px`;
+    cursorOutline.style.top = `${outlineY}px`;
+  }
   requestAnimationFrame(renderCursor);
 }
 renderCursor();
@@ -96,46 +118,52 @@ document.querySelectorAll('a, button, .magnetic, .magnetic-card').forEach(el => 
 });
 
 // GSAP Scroll Animations
-gsap.registerPlugin(ScrollTrigger);
+if (typeof gsap !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
 
-// Split text for section headers manually to animate characters
-document.querySelectorAll('.split-text').forEach(header => {
-  const text = header.innerText;
-  header.innerHTML = text.split('').map(char => `<span class="char">${char === ' ' ? '&nbsp;' : char}</span>`).join('');
-  
-  gsap.from(header.querySelectorAll('.char'), {
-    scrollTrigger: {
-      trigger: header,
-      start: 'top 85%',
-    },
-    y: 50,
-    opacity: 0,
-    duration: 0.8,
-    stagger: 0.03,
-    ease: 'back.out(1.7)'
+  // Split text for section headers manually to animate characters
+  document.querySelectorAll('.split-text').forEach(header => {
+    const text = header.innerText;
+    header.innerHTML = text.split('').map(char => `<span class="char">${char === ' ' ? '&nbsp;' : char}</span>`).join('');
+    
+    gsap.from(header.querySelectorAll('.char'), {
+      scrollTrigger: {
+        trigger: header,
+        start: 'top 85%',
+      },
+      y: 50,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.03,
+      ease: 'back.out(1.7)'
+    });
   });
-});
 
-// Reveal cards on scroll
-gsap.utils.toArray('.scroll-reveal .card').forEach(card => {
-  gsap.from(card, {
-    scrollTrigger: {
-      trigger: card,
-      start: 'top 85%',
-    },
-    y: 40,
-    opacity: 0,
-    duration: 0.8,
-    ease: 'power3.out'
+  // Reveal cards on scroll
+  gsap.utils.toArray('.scroll-reveal .card').forEach(card => {
+    gsap.from(card, {
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 85%',
+      },
+      y: 40,
+      opacity: 0,
+      duration: 0.8,
+      ease: 'power3.out'
+    });
   });
-});
+}
 
 // Navigation Links
 document.querySelectorAll('.nav-link[data-target]').forEach(link => {
   link.addEventListener('click', () => {
     const target = document.querySelector(link.getAttribute('data-target'));
     if (target) {
-      lenis.scrollTo(target);
+      if(lenis) {
+        lenis.scrollTo(target);
+      } else {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   });
 });
@@ -188,14 +216,14 @@ document.querySelectorAll(".project-card").forEach((button) => {
 
     modal.showModal();
     document.body.style.overflow = 'hidden';
-    lenis.stop();
+    if(lenis) lenis.stop();
   });
 });
 
 closeModal.addEventListener("click", () => {
   modal.close();
   document.body.style.overflow = 'auto';
-  lenis.start();
+  if(lenis) lenis.start();
 });
 
 modal.addEventListener("click", (e) => {
@@ -203,7 +231,7 @@ modal.addEventListener("click", (e) => {
   if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) {
     modal.close();
     document.body.style.overflow = 'auto';
-    lenis.start();
+    if(lenis) lenis.start();
   }
 });
 

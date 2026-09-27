@@ -25,7 +25,7 @@
         <button class="nav-link" data-target="#contact">Contact</button>
       </nav>
       <div class="nav-cta">
-        <a class="btn btn-outline btn-small" href="https://drive.google.com/file/d/1HKLFoyDytSITlWct2Yqx1JW7JMMSe4MG/view?usp=sharing" target="_blank" rel="noopener noreferrer" aria-label="Resume">Resume ↗</a>
+        <a class="btn btn-outline btn-small" href="mailto:shauryavaid1@gmail.com" aria-label="Email Me">Email Me</a>
         <button class="btn btn-primary btn-small nav-link" data-target="#contact">Get in touch</button>
       </div>
     </div>
@@ -181,32 +181,21 @@
     </section>
 
     <section class="section reveal" id="contact">
-      <div class="container contact-grid">
+      <div class="container contact-grid" style="grid-template-columns: 1fr; max-width: 600px; text-align: center; margin: 0 auto;">
         <div>
           <p class="section-kicker">06 / Contact</p>
           <h2>Let's build something.</h2>
           <p class="muted">I'm open to internships, collabs on AI tooling, or just a good conversation about prompts that won't behave.</p>
-          <div class="contact-cards">
+          <div class="contact-cards" style="justify-content: center;">
             <article class="card contact-mini"><small>EMAIL</small><p>shauryavaid1@gmail.com</p></article>
-            <article class="card contact-mini"><small>PHONE</small><p>+91 88512 52590</p></article>
             <article class="card contact-mini"><small>BASED IN</small><p>New Delhi, India</p></article>
           </div>
-          <div class="contact-social">
-            <a class="btn btn-outline btn-small" href="https://github.com/ShauryaVaid" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a class="btn btn-outline btn-small" href="http://linkedin.com/in/shaurya~vaid" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <div class="contact-social" style="justify-content: center; margin-top: 2rem;">
+            <a class="btn btn-primary" href="mailto:shauryavaid1@gmail.com">Email Me</a>
+            <a class="btn btn-outline" href="https://github.com/ShauryaVaid" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a class="btn btn-outline" href="http://linkedin.com/in/shaurya~vaid" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           </div>
         </div>
-        <form id="contactForm" class="card contact-form">
-          <div class="two-col">
-            <label>Your name<input name="name" required></label>
-            <label>Email<input name="email" type="email" required></label>
-          </div>
-          <label>Message<textarea name="message" rows="5" required></textarea></label>
-          <div class="form-row">
-            <p class="form-note">Usually replies within 24h.</p>
-            <button class="btn btn-primary" type="submit">Send message ↗</button>
-          </div>
-        </form>
       </div>
     </section>
   </main>
@@ -242,5 +231,5 @@
   </dialog>
 
   <script src="./script.js"></script>
-</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script></body>
 </html>

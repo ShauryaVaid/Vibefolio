@@ -1,198 +1,55 @@
-// Initialize Lenis for Smooth Scrolling
-let lenis;
-try {
-  lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    direction: 'vertical',
-    gestureDirection: 'vertical',
-    smooth: true,
-  });
-
-  function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-  }
-  requestAnimationFrame(raf);
-} catch (e) {
-  console.warn("Lenis not loaded", e);
-}
-
-// Intro Loader & Hero Animation with Anime.js
-document.body.style.overflow = 'hidden';
-document.addEventListener('DOMContentLoaded', () => {
-  // Fallback to remove loader just in case
-  setTimeout(() => {
-    const loader = document.querySelector('.loader');
-    if(loader) loader.style.display = 'none';
-    document.body.style.overflow = 'auto';
-  }, 3500);
-
-  if (typeof anime === 'undefined') {
-    document.querySelector('.loader').style.display = 'none';
-    document.body.style.overflow = 'auto';
-    return;
-  }
-
-  const loaderTimeline = anime.timeline({
-    easing: 'easeOutExpo',
-  });
-
-  loaderTimeline
-    .to('.loader-text', {
-      opacity: 1,
-      scale: [0.8, 1],
-      duration: 1000
-    })
-    .to('.loader', {
-      translateY: '-100%',
-      duration: 1200,
-      delay: 500,
-      easing: 'easeInOutExpo',
-      complete: () => {
-        document.body.style.overflow = 'auto';
-        
-        // Staggered letters for Hero Name
-        anime({
-          targets: '.huge-title .letter',
-          translateY: ['100%', '0%'],
-          opacity: [0, 1],
-          duration: 1200,
-          delay: anime.stagger(80),
-          easing: 'easeOutExpo'
-        });
-
-        // Fade up other elements
-        anime({
-          targets: '.fade-up',
-          translateY: [30, 0],
-          opacity: [0, 1],
-          duration: 1000,
-          delay: anime.stagger(150),
-          easing: 'easeOutQuad'
-        });
-        
-        // Background circles parallax
-        anime({
-          targets: '.bg-circle',
-          scale: [0.8, 1],
-          opacity: [0, 0.5],
-          duration: 2000,
-          easing: 'easeOutExpo'
-        });
-      }
-    });
-});
-
-// Custom Cursor Logic
-const cursorDot = document.querySelector('.cursor-dot');
-const cursorOutline = document.querySelector('.cursor-outline');
-let mouseX = 0, mouseY = 0;
-let outlineX = 0, outlineY = 0;
-
-window.addEventListener('mousemove', (e) => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-  if(cursorDot) {
-    cursorDot.style.left = `${mouseX}px`;
-    cursorDot.style.top = `${mouseY}px`;
-  }
-});
-
-// Smooth follow for outline
-function renderCursor() {
-  outlineX += (mouseX - outlineX) * 0.15;
-  outlineY += (mouseY - outlineY) * 0.15;
-  if(cursorOutline) {
-    cursorOutline.style.left = `${outlineX}px`;
-    cursorOutline.style.top = `${outlineY}px`;
-  }
-  requestAnimationFrame(renderCursor);
-}
-renderCursor();
-
-// Magnetic Cursor Hover Effect
-document.querySelectorAll('a, button, .magnetic, .magnetic-card').forEach(el => {
-  el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-  el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-});
-
-// GSAP Scroll Animations
-if (typeof gsap !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-
-  // Split text for section headers manually to animate characters
-  document.querySelectorAll('.split-text').forEach(header => {
-    const text = header.innerText;
-    header.innerHTML = text.split('').map(char => `<span class="char">${char === ' ' ? '&nbsp;' : char}</span>`).join('');
-    
-    gsap.from(header.querySelectorAll('.char'), {
-      scrollTrigger: {
-        trigger: header,
-        start: 'top 85%',
-      },
-      y: 50,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.03,
-      ease: 'back.out(1.7)'
-    });
-  });
-
-  // Reveal cards on scroll
-  gsap.utils.toArray('.scroll-reveal .card').forEach(card => {
-    gsap.from(card, {
-      scrollTrigger: {
-        trigger: card,
-        start: 'top 85%',
-      },
-      y: 40,
-      opacity: 0,
-      duration: 0.8,
-      ease: 'power3.out'
-    });
-  });
-}
-
-// Navigation Links
-document.querySelectorAll('.nav-link[data-target]').forEach(link => {
-  link.addEventListener('click', () => {
-    const target = document.querySelector(link.getAttribute('data-target'));
-    if (target) {
-      if(lenis) {
-        lenis.scrollTo(target);
-      } else {
-        target.scrollIntoView({ behavior: 'smooth' });
-      }
+const links = document.querySelectorAll(".nav-link");
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("in-view");
     }
   });
+}, { threshold: 0.15 });
+
+document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+
+links.forEach((link) => {
+  link.addEventListener("click", () => {
+    const target = link.getAttribute("data-target");
+    if (!target) return;
+    const node = document.querySelector(target);
+    if (node) node.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
 });
 
-// Project Modals
-const projectData = {
+const hero = document.getElementById("hero");
+const spotlight = document.getElementById("spotlight");
+if (hero && spotlight) {
+  hero.addEventListener("mousemove", (event) => {
+    const rect = hero.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+    spotlight.style.setProperty("--mx", `${x}%`);
+    spotlight.style.setProperty("--my", `${y}%`);
+  });
+}
+
+const projectContent = {
   email: {
-    title: "AI Smart Email Generator",
-    tags: ["LangChain", "MongoDB", "Streamlit", "Python"],
-    desc: "Created an LLM-powered email drafting tool with tone control, context instructions, and MongoDB-backed preference/history support. Built a clean Streamlit interface for practical daily use.",
+    title: "AI Smart Email Response Generator",
+    text: "Created an LLM-powered email drafting tool with tone control, context instructions, and MongoDB-backed preference/history support. Built a clean Streamlit interface for practical daily use.",
     repo: "https://github.com/ShauryaVaid/ai-smart-email-reply-generator-for-professionals"
   },
-  hardware: {
-    title: "Reconfigurable Approx ALU",
-    tags: ["Verilog", "Vivado", "Hardware Design"],
-    desc: "Designed a Runtime-Reconfigurable Approximate Arithmetic Unit for Edge Computing capable of switching between exact logic and approximate logic to save 66% dynamic power.",
-    repo: "https://github.com/ShauryaVaid/reconfig-approx-alu"
-  },
   voice: {
-    title: "Voice Assistant",
-    tags: ["Python", "SpeechRecognition", "OS"],
-    desc: "Developed a personal assistant script for weather checks and task automation. Implemented custom wake-word detection to make interaction faster and more responsive.",
+    title: "Voice Assistant (Python)",
+    text: "Developed a personal assistant script for weather checks and task automation. Implemented custom wake-word detection to make interaction faster and more responsive.",
     repo: "https://github.com/ShauryaVaid/Video-Analyst"
+  },
+  sim: {
+    title: "SIM Carrier Identification Tool",
+    text: "Built a quick Python utility that parses phone numbers and returns regional carrier metadata, focused on speed and clarity of output.",
+    repo: "https://github.com/ShauryaVaid"
   }
 };
 
 const modal = document.getElementById("projectModal");
 const modalTitle = document.getElementById("modalTitle");
-const modalTags = document.getElementById("modalTags");
 const modalText = document.getElementById("modalText");
 const modalRepo = document.getElementById("modalRepo");
 const closeModal = document.getElementById("closeModal");
@@ -200,40 +57,213 @@ const closeModal = document.getElementById("closeModal");
 document.querySelectorAll(".project-card").forEach((button) => {
   button.addEventListener("click", () => {
     const key = button.dataset.project;
-    const data = projectData[key];
-    if (!data) return;
-    
-    modalTitle.textContent = data.title;
-    modalText.textContent = data.desc;
-    modalRepo.href = data.repo;
-    
-    modalTags.innerHTML = '';
-    data.tags.forEach(tag => {
-      const span = document.createElement('span');
-      span.textContent = tag;
-      modalTags.appendChild(span);
-    });
-
+    const content = projectContent[key];
+    if (!content) return;
+    modalTitle.textContent = content.title;
+    modalText.textContent = content.text;
+    if(modalRepo) modalRepo.href = content.repo || "#";
     modal.showModal();
-    document.body.style.overflow = 'hidden';
-    if(lenis) lenis.stop();
   });
 });
 
-closeModal.addEventListener("click", () => {
-  modal.close();
-  document.body.style.overflow = 'auto';
-  if(lenis) lenis.start();
+if (closeModal) {
+  closeModal.addEventListener("click", () => modal.close());
+}
+
+if (modal) {
+  modal.addEventListener("click", (event) => {
+    const rect = modal.getBoundingClientRect();
+    const inDialog = (
+      event.clientX >= rect.left &&
+      event.clientX <= rect.right &&
+      event.clientY >= rect.top &&
+      event.clientY <= rect.bottom
+    );
+    if (!inDialog) modal.close();
+  });
+}
+
+const form = document.getElementById("contactForm");
+if (form) {
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      if (!response.ok) {
+        throw new Error("Request failed");
+      }
+
+      form.reset();
+      alert("Message sent successfully.");
+    } catch (error) {
+      const entries = JSON.parse(localStorage.getItem("sv_portfolio_messages") || "[]");
+      entries.unshift({ ...data, at: new Date().toISOString(), fallback: true });
+      localStorage.setItem("sv_portfolio_messages", JSON.stringify(entries));
+      alert("Could not reach server right now. Message saved locally.");
+    }
+  });
+}
+
+const year = document.getElementById("year");
+if (year) year.textContent = new Date().getFullYear().toString();
+// Advanced GSAP Animations
+gsap.registerPlugin(ScrollTrigger);
+
+// Hero animations
+gsap.from('.hero-content h1', { duration: 1.2, y: 100, opacity: 0, ease: 'power4.out', delay: 0.2 });
+gsap.from('.hero-content p', { duration: 1, y: 50, opacity: 0, ease: 'power3.out', delay: 0.5 });
+gsap.from('.hero-content .btn', { duration: 0.8, y: 30, opacity: 0, ease: 'back.out(1.7)', stagger: 0.2, delay: 0.8 });
+
+// Scroll animations for cards
+gsap.utils.toArray('.card').forEach(card => {
+  gsap.from(card, {
+    scrollTrigger: {
+      trigger: card,
+      start: 'top 85%',
+      toggleActions: 'play none none reverse'
+    },
+    y: 50,
+    opacity: 0,
+    duration: 0.8,
+    ease: 'power3.out',
+    scale: 0.95
+  });
 });
 
-modal.addEventListener("click", (e) => {
-  const rect = modal.getBoundingClientRect();
-  if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) {
-    modal.close();
-    document.body.style.overflow = 'auto';
-    if(lenis) lenis.start();
+// Parallax for section headers
+gsap.utils.toArray('.section-kicker, .section-head h2').forEach(header => {
+  gsap.from(header, {
+    scrollTrigger: {
+      trigger: header,
+      start: 'top 90%',
+    },
+    x: -30,
+    opacity: 0,
+    duration: 0.8,
+    ease: 'power3.out',
+    stagger: 0.2
+  });
+});
+
+// Magnetic effect for buttons
+document.querySelectorAll('.btn, .nav-link').forEach(btn => {
+  btn.addEventListener('mousemove', (e) => {
+    const rect = btn.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    gsap.to(btn, { x: x * 0.3, y: y * 0.3, duration: 0.3, ease: 'power2.out' });
+  });
+  btn.addEventListener('mouseleave', () => {
+    gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.3)' });
+  });
+});
+
+
+const textWrapper = document.querySelector('.ml2');
+if (textWrapper) {
+  textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter' style='display:inline-block;'>$&</span>");
+
+  anime.timeline({loop: false})
+    .add({
+      targets: '.ml2 .letter',
+      scale: [4,1],
+      opacity: [0,1],
+      translateZ: 0,
+      easing: "easeOutExpo",
+      duration: 1200,
+      delay: (el, i) => 100 * i
+    });
+}
+// Anime.js Professional Hero Intro Sequence
+document.addEventListener('DOMContentLoaded', () => {
+  const textWrapper = document.querySelector('.ml2');
+  if (textWrapper) {
+    textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter' style='display:inline-block;'>$&</span>");
   }
+
+  // Ensure hero is hidden initially via JS before animation
+  const heroElements = document.querySelectorAll('.hero-title, .hero-left p, .hero-actions .btn');
+  heroElements.forEach(el => el.style.opacity = '0');
+
+  anime.timeline({loop: false})
+    .add({
+      targets: '.hero-title',
+      opacity: [0, 1],
+      translateY: [40, 0],
+      duration: 1000,
+      easing: 'easeOutQuart'
+    })
+    .add({
+      targets: '.ml2 .letter',
+      scale: [1.5, 1],
+      opacity: [0, 1],
+      duration: 1200,
+      easing: 'easeOutExpo',
+      delay: anime.stagger(80)
+    }, "-=600")
+    .add({
+      targets: '.hero-left p',
+      opacity: [0, 1],
+      translateY: [30, 0],
+      duration: 800,
+      easing: 'easeOutQuart',
+      delay: anime.stagger(150)
+    }, "-=800")
+    .add({
+      targets: '.hero-actions .btn',
+      opacity: [0, 1],
+      translateY: [20, 0],
+      duration: 800,
+      easing: 'easeOutQuart',
+      delay: anime.stagger(150)
+    }, "-=600");
 });
 
-// Update Year
-document.getElementById('year').textContent = new Date().getFullYear();
+// Anime.js Staggered Scroll Reveal
+const observerAnime = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const section = entry.target;
+      
+      // Animate section headers
+      const headers = section.querySelectorAll('.section-kicker, h2, .section-side-text');
+      if (headers.length > 0) {
+        anime({
+          targets: headers,
+          translateY: [40, 0],
+          opacity: [0, 1],
+          duration: 1000,
+          easing: 'easeOutQuart',
+          delay: anime.stagger(150)
+        });
+      }
+
+      // Animate grids/cards with grid stagger
+      const cards = section.querySelectorAll('.card, .marquee');
+      if (cards.length > 0) {
+        anime({
+          targets: cards,
+          translateY: [50, 0],
+          opacity: [0, 1],
+          duration: 1200,
+          easing: 'easeOutExpo',
+          delay: anime.stagger(100, {start: 300})
+        });
+      }
+      
+      observer.unobserve(section);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.section').forEach(sec => {
+  // Hide initially
+  sec.querySelectorAll('.section-kicker, h2, .section-side-text, .card, .marquee').forEach(el => el.style.opacity = '0');
+  observerAnime.observe(sec);
+});

@@ -7,117 +7,110 @@
   <meta name="description" content="Portfolio of Shaurya Vaid - AI/ML Engineer">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-</head>
-<body class="loading">
-  <!-- Custom Cursor -->
-  <div class="cursor-dot"></div>
-  <div class="cursor-outline"></div>
-
-  <!-- Intro Loader -->
-  <div class="loader">
-    <div class="loader-text">SV</div>
-  </div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script><script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script></head>
+<body>
   <header class="header" id="top">
     <div class="container nav">
-      <button class="brand nav-link magnetic" data-target="#top">
+      <button class="brand nav-link" data-target="#top">
         <span class="logo-chip">SV</span>
         <span class="brand-name">Shaurya Vaid</span>
       </button>
       <nav class="desktop-nav">
-        <button class="nav-link magnetic" data-target="#about">About</button>
-        <button class="nav-link magnetic" data-target="#skills">Skills</button>
-        <button class="nav-link magnetic" data-target="#experience">Work</button>
-        <button class="nav-link magnetic" data-target="#projects">Projects</button>
-        <button class="nav-link magnetic" data-target="#repos">Github</button>
+        <button class="nav-link" data-target="#about">About</button>
+        <button class="nav-link" data-target="#skills">Skills</button>
+        <button class="nav-link" data-target="#experience">Work</button>
+        <button class="nav-link" data-target="#projects">Projects</button>
+        <button class="nav-link" data-target="#contact">Contact</button>
       </nav>
       <div class="nav-cta">
-        <a class="btn btn-outline btn-small magnetic" href="mailto:shauryavaid1@gmail.com" aria-label="Email Me">Email Me</a>
+        <a class="btn btn-outline btn-small" href="mailto:shauryavaid1@gmail.com" aria-label="Email Me">Email Me</a>
+        <button class="btn btn-primary btn-small nav-link" data-target="#contact">Get in touch</button>
       </div>
     </div>
   </header>
 
   <main>
     <section class="hero" id="hero">
+      <div class="hero-grid"></div>
+      <div class="hero-spotlight" id="spotlight"></div>
       <div class="container hero-content">
-        <div class="hero-left">
-          <p class="badge fade-up">Available for internships - Summer 2026</p>
-          <h1 class="huge-title">
-            <span class="word">
-              <span class="letter">S</span><span class="letter">H</span><span class="letter">A</span><span class="letter">U</span><span class="letter">R</span><span class="letter">Y</span><span class="letter">A</span>
-            </span>
-          </h1>
-          <p class="lead fade-up">
+        <div class="hero-left reveal">
+          <p class="badge">• Available for internships - Summer 2026</p>
+          <h1 class="hero-title">Hey, I'm <span class="text-accent ml2">Shaurya</span>.<br>I build practical AI tools.</h1>
+          <p class="lead">
             Motivated engineering student focused on developing intelligent software solutions.
             I bridge complex AI concepts and practical applications with LLMs and full-stack tools.
           </p>
-          <div class="hero-actions fade-up">
-            <button class="btn btn-primary nav-link magnetic" data-target="#projects">See my work</button>
-            <a class="btn btn-outline magnetic" href="mailto:shauryavaid1@gmail.com">Let's talk</a>
+          <div class="hero-actions">
+            <button class="btn btn-primary nav-link" data-target="#projects">See my work</button>
+            <button class="btn btn-outline nav-link" data-target="#contact">Let's talk</button>
+            <a class="icon-btn icon-link" href="https://github.com/ShauryaVaid" target="_blank" rel="noopener noreferrer" aria-label="GitHub">⌁</a>
+            <a class="icon-btn icon-link" href="http://linkedin.com/in/shaurya~vaid" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">in</a>
           </div>
+          <p class="hero-location">📍 New Delhi, India</p>
         </div>
-      </div>
-      <!-- Background elements for gravity effect -->
-      <div class="bg-circle circle-1"></div>
-      <div class="bg-circle circle-2"></div>
-    </section>
-
-    <!-- Marquee Banner -->
-    <div class="marquee-banner">
-      <div class="marquee-content">
-        <span>AI ENGINEERING</span><span>—</span><span>MACHINE LEARNING</span><span>—</span><span>PROMPT DESIGN</span><span>—</span>
-        <span>AI ENGINEERING</span><span>—</span><span>MACHINE LEARNING</span><span>—</span><span>PROMPT DESIGN</span><span>—</span>
-      </div>
-    </div>
-
-    <section class="section scroll-reveal" id="about">
-      <div class="container two-col">
-        <div>
-          <p class="section-kicker">01 / About</p>
-          <h2 class="split-text">Who I am.</h2>
-        </div>
-        <div class="about-text">
-          <p>
-            I'm a Pre-final year student at KIIT University exploring the intersection of 
-            <span class="text-accent">Artificial Intelligence, Machine Learning,</span> and efficient software systems.
-          </p>
-          <p>
-            I care about building practical tools that solve real problems. Whether it's crafting 
-            robust LLM pipelines, prompt engineering for better context retrieval, or scripting 
-            lightweight automations—I aim for code that works quietly and reliably.
-          </p>
-        </div>
+        <aside class="hero-card reveal">
+          <div class="card-dots"><span></span><span></span><span></span><small>profile.json</small></div>
+<pre>{
+  "name": "Shaurya Vaid",
+  "role": "AI/ML Engineer",
+  "focus": ["LLMs", "prompt eng.", "agents"],
+  "stack": ["python", "langchain", "mongodb"],
+  "status": "shipping",
+  "open_to": "internships"
+}</pre>
+          <div class="hero-meta">
+            <article><p>FOCUS</p><h4>LLMs·Prompt Engineering</h4></article>
+            <article><p>STACK</p><h4>Python·LangChain·MongoDB</h4></article>
+            <article><p>OPEN</p><h4>Open to Internships</h4></article>
+          </div>
+        </aside>
       </div>
     </section>
 
-    <section class="section scroll-reveal" id="skills">
+    <section class="section reveal" id="about">
+      <div class="container">
+        <p class="section-kicker">01 / About</p>
+        <h2>A builder, not just a learner.</h2>
+        <p>
+          I enjoy turning messy ideas into usable products: connecting LLMs with context,
+          refining prompt pipelines, and building clean interfaces around AI workflows.
+        </p>
+      </div>
+    </section>
+
+    <section class="section reveal" id="skills">
       <div class="container">
         <div class="section-head">
           <div>
             <p class="section-kicker">02 / Skills</p>
-            <h2 class="split-text">The tools I reach for.</h2>
+            <h2>The tools I reach for.</h2>
           </div>
+          <p class="section-side-text">A working stack — chosen for being fast to ship with, not for hype.</p>
         </div>
         <div class="skills-grid">
-          <article class="card magnetic-card"><h3>Languages & Core</h3><p>Python, SQL / MySQL, Prompt Engineering</p></article>
-          <article class="card magnetic-card"><h3>AI & ML</h3><p>LangChain, LLMs, Generative AI, Vertex AI</p></article>
-          <article class="card magnetic-card"><h3>Data</h3><p>MongoDB, ChromaDB, Vector Stores</p></article>
-          <article class="card magnetic-card"><h3>Build & Ship</h3><p>Streamlit, API Integration, GitHub</p></article>
+          <article class="card"><h3>Languages & Core</h3><p>Python, SQL / MySQL, Prompt Engineering</p></article>
+          <article class="card"><h3>AI & ML</h3><p>LangChain, LLMs, Generative AI, Vertex AI</p></article>
+          <article class="card"><h3>Data</h3><p>MongoDB, ChromaDB, Vector Stores</p></article>
+          <article class="card"><h3>Build & Ship</h3><p>Streamlit, API Integration, GitHub</p></article>
+        </div>
+        <div class="marquee-wrap">
+          <div class="marquee" aria-hidden="true">
+            <span>Python</span><span>LangChain</span><span>LLMs</span><span>MongoDB</span><span>ChromaDB</span><span>Streamlit</span>
+            <span>Vertex AI</span><span>Prompt Engineering</span><span>MySQL</span><span>GenAI</span>
+            <span>Python</span><span>LangChain</span><span>LLMs</span><span>MongoDB</span><span>ChromaDB</span><span>Streamlit</span>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section scroll-reveal" id="experience">
+    <section class="section reveal" id="experience">
       <div class="container">
         <p class="section-kicker">03 / Experience</p>
-        <h2 class="split-text">Where I've been shipping.</h2>
-        <article class="timeline-item card magnetic-card">
+        <h2>Where I've been shipping.</h2>
+        <article class="timeline-item card">
           <h3>Machine Learning & AI Engineer</h3>
           <p class="muted">Konnexions (College Society) | Dec 2025 - Present</p>
           <ul>
@@ -129,54 +122,56 @@
       </div>
     </section>
 
-    <section class="section scroll-reveal" id="projects">
+    <section class="section reveal" id="projects">
       <div class="container">
         <div class="section-head">
           <div>
             <p class="section-kicker">04 / Selected Work</p>
-            <h2 class="split-text">Things I've built.</h2>
+            <h2>Things I've built.</h2>
           </div>
+          <p class="section-side-text">A few projects — from LLM-powered tools to small Python utilities. Click any card to peek inside.</p>
         </div>
         <div class="projects-grid">
-          <button class="card project-card magnetic-card" data-project="email">
-            <small class="card-tag">2025   SOLO   END-TO-END</small>
-            <h3>AI Smart Email Generator</h3>
-            <p>LangChain, MongoDB, Streamlit</p>
+          <button class="card project-card" data-project="email">
+            <small class="card-tag">2025 • SOLO • END-TO-END</small>
+            <h3>AI Smart Email Response Generator</h3>
+            <p>LangChain, MongoDB, Streamlit, API Integration</p>
           </button>
-          <button class="card project-card magnetic-card" data-project="hardware">
-            <small class="card-tag">2026   HARDWARE</small>
-            <h3>Reconfigurable Approx ALU</h3>
-            <p>Dynamic Error Budget, 66% Power Save</p>
-          </button>
-          <button class="card project-card magnetic-card" data-project="voice">
-            <small class="card-tag">2022   SOLO</small>
+          <button class="card project-card" data-project="voice">
+            <small class="card-tag">2022 • SOLO</small>
             <h3>Voice Assistant (Python)</h3>
-            <p>Custom wake-word, task automation</p>
+            <p>Voice commands, custom wake-word, task automation</p>
+          </button>
+          <button class="card project-card" data-project="sim">
+            <small class="card-tag">2022 • SOLO</small>
+            <h3>SIM Carrier Identification Tool</h3>
+            <p>Phone parser utility with regional carrier metadata lookup</p>
           </button>
         </div>
       </div>
     </section>
 
-    <section class="section scroll-reveal" id="repos">
+    <section class="section reveal" id="repos">
       <div class="container">
         <div class="section-head">
           <div>
             <p class="section-kicker">05 / Top Repositories</p>
-            <h2 class="split-text">Open Source.</h2>
+            <h2>Open Source & Code.</h2>
           </div>
+          <p class="section-side-text">A selection of my top GitHub repositories featuring AI, hardware, and automation.</p>
         </div>
         <div class="projects-grid">
-          <a class="card link-card magnetic-card" href="https://github.com/ShauryaVaid/reconfig-approx-alu" target="_blank" rel="noopener noreferrer">
+          <a class="card link-card" href="https://github.com/ShauryaVaid/reconfig-approx-alu" target="_blank" rel="noopener noreferrer">
             <small class="card-tag">Verilog / Hardware</small>
             <h3>reconfig-approx-alu</h3>
             <p>Runtime-Reconfigurable Approximate Arithmetic Unit for Edge Computing.</p>
           </a>
-          <a class="card link-card magnetic-card" href="https://github.com/ShauryaVaid/ai-smart-email-reply-generator-for-professionals" target="_blank" rel="noopener noreferrer">
+          <a class="card link-card" href="https://github.com/ShauryaVaid/ai-smart-email-reply-generator-for-professionals" target="_blank" rel="noopener noreferrer">
             <small class="card-tag">Python / LLM</small>
             <h3>AI Email Generator</h3>
             <p>Smart email response generator using LangChain and LLMs.</p>
           </a>
-          <a class="card link-card magnetic-card" href="https://github.com/ShauryaVaid/Video-Analyst" target="_blank" rel="noopener noreferrer">
+          <a class="card link-card" href="https://github.com/ShauryaVaid/Video-Analyst" target="_blank" rel="noopener noreferrer">
             <small class="card-tag">Python / AI</small>
             <h3>Video-Analyst</h3>
             <p>Automated video content analysis and processing tool.</p>
@@ -185,20 +180,20 @@
       </div>
     </section>
 
-    <section class="section scroll-reveal" id="contact">
+    <section class="section reveal" id="contact">
       <div class="container contact-grid" style="grid-template-columns: 1fr; max-width: 600px; text-align: center; margin: 0 auto;">
         <div>
           <p class="section-kicker">06 / Contact</p>
-          <h2 class="split-text">Let's connect.</h2>
+          <h2>Let's build something.</h2>
           <p class="muted">I'm open to internships, collabs on AI tooling, or just a good conversation about prompts that won't behave.</p>
           <div class="contact-cards" style="justify-content: center;">
-            <article class="card contact-mini magnetic-card"><small>EMAIL</small><p>shauryavaid1@gmail.com</p></article>
-            <article class="card contact-mini magnetic-card"><small>BASED IN</small><p>New Delhi, India</p></article>
+            <article class="card contact-mini"><small>EMAIL</small><p>shauryavaid1@gmail.com</p></article>
+            <article class="card contact-mini"><small>BASED IN</small><p>New Delhi, India</p></article>
           </div>
           <div class="contact-social" style="justify-content: center; margin-top: 2rem;">
-            <a class="btn btn-primary magnetic" href="mailto:shauryavaid1@gmail.com">Email Me</a>
-            <a class="btn btn-outline magnetic" href="https://github.com/ShauryaVaid" target="_blank">GitHub</a>
-            <a class="btn btn-outline magnetic" href="http://linkedin.com/in/shaurya~vaid" target="_blank">LinkedIn</a>
+            <a class="btn btn-primary" href="mailto:shauryavaid1@gmail.com">Email Me</a>
+            <a class="btn btn-outline" href="https://github.com/ShauryaVaid" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a class="btn btn-outline" href="http://linkedin.com/in/shaurya~vaid" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           </div>
         </div>
       </div>
@@ -206,23 +201,36 @@
   </main>
 
   <footer class="footer">
+    <div class="container footer-main">
+      <div>
+        <div class="brand footer-brand">
+          <span class="logo-chip">SV</span>
+          <span class="brand-name">Shaurya Vaid</span>
+        </div>
+        <p class="muted">Building practical AI tools that bridge ideas and impact.</p>
+      </div>
+      <div class="footer-actions">
+        <a class="icon-btn icon-link" href="mailto:shauryavaid1@gmail.com">✉</a>
+        <a class="icon-btn icon-link" href="https://github.com/ShauryaVaid" target="_blank" rel="noopener noreferrer">⌁</a>
+        <a class="icon-btn icon-link" href="http://linkedin.com/in/shaurya~vaid" target="_blank" rel="noopener noreferrer">in</a>
+        <button class="btn btn-outline nav-link" data-target="#top">Back to top ↑</button>
+      </div>
+    </div>
     <div class="container footer-wrap">
-      <p>© <span id="year"></span> Shaurya Vaid. Built with advanced motion.</p>
+      <p>© <span id="year"></span> Shaurya Vaid. Built with care — and a lot of prompts.</p>
+      <p class="muted">Designed & engineered in New Delhi.</p>
     </div>
   </footer>
 
   <dialog id="projectModal" class="modal">
     <article class="modal-card">
-      <button id="closeModal" class="modal-close magnetic" aria-label="Close">✕</button>
-      <h3 id="modalTitle" class="modal-title"></h3>
-      <div class="modal-tags" id="modalTags"></div>
-      <p id="modalText" class="modal-desc"></p>
-      <div class="modal-actions">
-        <a id="modalRepo" href="#" target="_blank" class="btn btn-primary magnetic">View on GitHub</a>
-      </div>
+      <button id="closeModal" class="modal-close" aria-label="Close">✕</button>
+      <h3 id="modalTitle"></h3>
+      <p id="modalText"></p>
+      <a id="modalRepo" href="#" target="_blank" class="btn btn-outline" style="margin-top: 1rem; display: inline-block;">View on GitHub</a>
     </article>
   </dialog>
 
   <script src="./script.js"></script>
-</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script><script></script><script> const lenis = new Lenis(); function raf(time) { lenis.raf(time); requestAnimationFrame(raf); } requestAnimationFrame(raf);</script></body>
 </html>
